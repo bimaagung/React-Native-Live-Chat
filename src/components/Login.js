@@ -1,7 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage, Header, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { login } from '../actions';
 
 // create a component
 class Login extends Component {
@@ -12,13 +14,24 @@ class Login extends Component {
             avatar:'',
             disabled: true
         }
+        console.ignoredYellowBox = [
+            'Setting a timer'
+        ]
+    }
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.user){
+            this.props.navigation.navigate('Chat');
+        }
     }
 
     onLoginPressed(){
-        console.log(`UserName is ${this.state.username} and Avatar is ${this.state.avatar}`);
+       const {username, avatar} = this.state;
+        this.props.login({username, avatar});
     }
 
     showBtnContainer(){
+        if(this.props.loading) return <ActivityIndicator/>;
         return (
             <Button
             title='Gabung Chat'
@@ -81,5 +94,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const mapStateToProps = state => {
+    return {
+        error: state.auth.error,
+        loading: state.auth.loading,
+        user: state.auth.user,
+    };
+};
 //make this component available to the app
-export default Login;
+export default connect(mapStateToProps, {login})(Login);
