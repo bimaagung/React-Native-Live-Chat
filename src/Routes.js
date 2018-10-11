@@ -4,7 +4,7 @@ import Login from './components/Login';
 import Chat from './components/Chat';
 
 const Routes = createStackNavigator({
-    
+         
         Splash: {
             screen: Splash,
             navigationOptions: { 
@@ -23,6 +23,7 @@ const Routes = createStackNavigator({
                 header: null 
             }
         },
+        
       
 });
 
